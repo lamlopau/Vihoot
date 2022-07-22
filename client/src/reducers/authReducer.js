@@ -1,4 +1,4 @@
-export const authReducer = (state, action) => {
+const authReducer = (state, action) => {
 	const {
 		type,
 		payload: { isAuthenticated, user }
@@ -17,3 +17,4 @@ export const authReducer = (state, action) => {
 			return state
 	}
 }
+export default authReducer

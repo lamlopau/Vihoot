@@ -4,7 +4,11 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 
 const authRouter = require('./routes/auth')
-const postRouter = require('./routes/post')
+const quizRouter = require("./routes/quiz");
+const gameRouter = require("./routes/game");
+const playerResultRouter = require("./routes/playerResult");
+const leaderboardRouter = require("./routes/leaderboard");
+
 
 const connectDB = async () => {
 	const connectionParams = {
@@ -27,7 +31,12 @@ app.use(express.json())
 app.use(cors())
 
 app.use('/api/auth', authRouter)
-app.use('/api/posts', postRouter)
+
+
+app.use("/api/quizes", quizRouter);
+app.use("/api/games", gameRouter);
+app.use("/api/playerResults", playerResultRouter);
+app.use("/api/leaderboard", leaderboardRouter);
 
 const PORT = process.env.PORT || 5000
 

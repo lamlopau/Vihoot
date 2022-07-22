@@ -1,18 +1,34 @@
 import './App.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import Landing from './components/layout/Landing'
+import { useEffect } from 'react'
 import Auth from './views/Auth'
 import AuthContextProvider from './contexts/AuthContext'
 import Dashboard from './views/Dashboard'
 import ProtectedRoute from './components/routing/ProtectedRoute'
-import About from './views/About'
-import PostContextProvider from './contexts/PostContext'
+import { useDispatch } from 'react-redux'
+import {createSocket} from './actions/socket'
+import io from "socket.io-client"
+import CreateGame from './components/creategame/creategame'
 import JoinForm from './components/auth/JoinForm'
-
+import MyQuiz from './components/MyQuizes/MyQuizes'
+import QuizDetail from './components/QuizDetails/QuizDetails'
+import JoinGame from './components/Game/JoinGame/JoinGame'
+import HostScreen from './components/Game/HostScreen/HostScreen'
+import PlayerScreen from './components/Game/PlayerScreen/PlayerScreen'
+import Quizes from './components/Quizes/Quizes'
 function App() {
+
+	const dispatch = useDispatch()
+
+  useEffect(() => {
+    const socket = io("http://localhost:3001")
+    dispatch(createSocket(socket))
+
+    return () => socket.disconnect()
+  }, [dispatch])
 	return (
 		<AuthContextProvider>
-			<PostContextProvider>
+		
 				<Router>
 					<Switch>
 						<Route exact path='/' component={JoinForm} />
@@ -27,10 +43,17 @@ function App() {
 							render={props => <Auth {...props} authRoute='register' />}
 						/>
 						<ProtectedRoute exact path='/dashboard' component={Dashboard} />
-						<ProtectedRoute exact path='/about' component={About} />
+						<ProtectedRoute path='/myquizes/:id' component={CreateGame} />
+						<ProtectedRoute path='/quizes/:id' component={QuizDetail} />
+						<ProtectedRoute path='/games/joingame' component={JoinGame} />
+						<ProtectedRoute path='/games/host/:id' component={HostScreen} />
+						<ProtectedRoute path='/games/player/:id' component={PlayerScreen} />
+						<ProtectedRoute exact path='/myquizes' component={MyQuiz} />
+
+						
 					</Switch>
 				</Router>
-			</PostContextProvider>
+			
 		</AuthContextProvider>
 	)
 }

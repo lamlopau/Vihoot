@@ -43,10 +43,10 @@ const NavbarMenu = () => {
 					</Nav.Link>
 					<Nav.Link
 						className='font-weight-bolder text-white'
-						to='/about'
+						to='/myquizes'
 						as={Link}
 					>
-						About
+						Create Game
 					</Nav.Link>
 				</Nav>
 
